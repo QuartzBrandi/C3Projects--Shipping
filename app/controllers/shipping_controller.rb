@@ -3,7 +3,6 @@ require 'active_shipping'
 class ShippingController < ApplicationController
 
   def index
-    # Package up a poster and a Wii for your nephew.
     packages = [
       ActiveShipping::Package.new( 100,                  # 100 grams
                                    [93,10],              # 93 cm long, 10 cm diameter
@@ -14,7 +13,6 @@ class ShippingController < ApplicationController
                                    :units => :imperial)  # not grams, not centimetres
     ]
 
-    # You live in Beverly Hills, he lives in Ottawa
     origin = ActiveShipping::Location.new( :country => 'US',
                                            :state => 'CA',
                                            :city => 'Beverly Hills',
@@ -25,11 +23,8 @@ class ShippingController < ApplicationController
                                                 :city => 'Ottawa',
                                                 :postal_code => 'K1P 1J1')
 
-    # Find out how much it'll be.
     ups = ActiveShipping::UPS.new(:login => ENV['ACTIVESHIPPING_USPS_LOGIN'], :password => ENV['ACTIVESHIPPING_UPS_PASSWORD'], :key => ENV['ACTIVESHIPPING_UPS_KEY'])
     response = ups.find_rates(origin, destination, packages)
-
-    raise
 
     ups_rates = response.rates.sort_by(&:price).collect {|rate| [rate.service_name, rate.price]}
     # => [["UPS Standard", 3936],
@@ -50,33 +45,48 @@ class ShippingController < ApplicationController
     #     ["USPS Global Express Guaranteed Non-Document Rectangular", 9400],
     #     ["USPS Global Express Guaranteed", 9400]]
 
-  render json: packages
+    render json: packages
 
-  #
-  # [
-  #   ActiveShipping::Package.new( 100,                  # 100 grams
-  #                                [93,10],              # 93 cm long, 10 cm diameter
-  #                                :cylinder => true)
-  #
-  #   {
-  #   "options":
-  #     {"cylinder":true},
-  #
-  #   "dimensions":[
-  #     {"amount":10,"unit":"centimetres"},
-  #     {"amount":10,"unit":"centimetres"},
-  #     {"amount":93,"unit":"centimetres"}
-  #   ],
-  #   "weight_unit_system":"metric",
-  #   "dimensions_unit_system":"metric",
-  #   "weight":{"amount":100,"unit":"grams"},
-  #   "value":null,
-  #   "currency":null,
-  #   "cylinder":true,
-  #   "gift":false,
-  #   "oversized":false,
-  #   "unpackaged":false},
-  #
-  #   {"options":{"units":"imperial"},"dimensions":[{"amount":4.5,"unit":"inches"},{"amount":10,"unit":"inches"},{"amount":15,"unit":"inches"}],"weight_unit_system":"imperial","dimensions_unit_system":"imperial","weight":{"amount":120.0,"unit":"ounces"},"value":null,"currency":null,"cylinder":false,"gift":false,"oversized":false,"unpackaged":false}]
+    end
+
+  def show
+    destination = ActiveShipping::Location.new( :country => params["country"],
+                                                :province => params["province"],
+                                                :city => params["city"],
+                                                :postal_code => params["zipcode"])
+      render json: destination
   end
+
+
+
+
+  def origin
+    ActiveShipping::Location.new( :country => params["origin_country"],
+                                           :state => params["origin_state"],
+                                           :city => params["origin_city"],
+                                           :zip => params["origin_zip"])
+  end
+
+  def destination
+    ActiveShipping::Location.new( :country => params["destination_country"],
+                                            :province => params["destination_province"],
+                                            :city => params["destination_city"],
+                                            :postal_code => params["destination_postal_code"])
+
+  end
+
+  def package
+    ActiveShipping::Package.new( 100,                  # 100 grams
+                                 [93,10],            # 93 cm long, 10 cm diameter
+                                :cylinder => true)
+
+  end
+
+  def response
+    ups = ActiveShipping::UPS.new(:login => ENV['ACTIVESHIPPING_USPS_LOGIN'], :password => ENV['ACTIVESHIPPING_UPS_PASSWORD'], :key => ENV['ACTIVESHIPPING_UPS_KEY'])
+    response = ups.find_rates(origin, destination, package)
+
+    render json: response
+  end
+
 end
