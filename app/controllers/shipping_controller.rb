@@ -23,14 +23,18 @@ class ShippingController < ApplicationController
     ActiveShipping::Location.new( :country => params["origin_country"],
                                   :state => params["origin_state"],
                                   :city => params["origin_city"],
-                                  :zip => params["origin_zip"])
+                                  :zip => params["origin_zip"],
+                                  :address1 => params["origin_address1"],
+                                  :address2 => params["origin_address2"])
   end
 
   def destination
     ActiveShipping::Location.new( :country => params["destination_country"],
                                   :state => params["destination_state"],
                                   :city => params["destination_city"],
-                                  :zip => params["destination_zip"])
+                                  :zip => params["destination_zip"],
+                                  :address1 => params["destination_address1"],
+                                  :address2 => params["destination_address2"])
   end
 
   def packages

@@ -14,16 +14,16 @@ RSpec.describe ShippingController, type: :controller do
       destination_city: "Seattle",
       destination_address1: "University of Washington",
       destination_address2: "",
-      ounces: "160",
-      width: "12",
-      height: "24",
-      length: "12"
+      # ounces: "160",
+      # width: "12",
+      # height: "24",
+      # length: "12"
     }
       # ounces & inches
       # EVENTUALLY: options?
   }
 
-  ["ups", "usps"].each do |shipper|
+  {"ups" => 7, "usps" => 6}.each do |shipper, count|
     describe "GET 'show' id: #{shipper}" do
       before :each do
         query = complete_query
@@ -44,14 +44,14 @@ RSpec.describe ShippingController, type: :controller do
           @response = JSON.parse response.body
         end
 
-        # ex. { options: [["UPS Standard", 2345], ["UPS Global", 3456]]}
+        # ex. [["UPS Standard", 2345], ["UPS Global", 3456]]
         it "lists multiple shipment types" do
-          expect(@response["options"].count) to eq 11
+          expect(@response.count).to eq count
         end
 
         it "lists shipment type and estimated cost" do
-          @response["options"].each do |estimate|
-            expect(estimate.count) to eq 2
+          @response.each do |estimate|
+            expect(estimate.count).to eq 2
           end
         end
       end
