@@ -47,5 +47,11 @@ RSpec.describe Log, type: :model do
       expect(@log).to be_invalid
       expect(@log.errors.keys).to include(:order_number)
     end
+
+    # it "requires date format for purchase_time" do
+    #   @log.purchase_time = 2015
+    #   expect(@log).to be_invalid
+    #   expect(@log.errors.keys).to include(:purchase_time)
+    # end
   end
 end
