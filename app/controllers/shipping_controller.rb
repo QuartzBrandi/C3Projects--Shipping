@@ -14,7 +14,7 @@ class ShippingController < ApplicationController
       rates = response.rates.sort_by(&:price).collect {|rate| [rate.service_name, rate.price]}
       status = 200
     else
-      rates = ["Make sure you enter right shipper"]
+      rates = []
       status = 204
     end
     render json: rates, status: status
