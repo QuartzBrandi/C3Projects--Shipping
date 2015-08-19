@@ -51,7 +51,7 @@ RSpec.describe ShippingController, type: :controller do
 
         it "lists shipment type and estimated cost" do
           @response.each do |estimate|
-            expect(estimate.count).to eq 2
+            expect(estimate.count).to eq 3
           end
         end
       end
