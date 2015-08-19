@@ -10,6 +10,7 @@ class ShippingController < ApplicationController
     elsif params[:id] == "usps"
       usps = ActiveShipping::USPS.new(:login => ENV['ACTIVESHIPPING_USPS_LOGIN'])
       response = usps.find_rates(origin, destination, packages)
+      raise
       rates = response.rates.sort_by(&:price).collect {|rate| [rate.service_name, rate.price]}
       status = 200
     else
