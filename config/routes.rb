@@ -2,6 +2,10 @@ Rails.application.routes.draw do
 
   get '/shipping' => 'shipping#index'
   get '/shipping/:id' => 'shipping#show'
+
+
+  # http://localhost:3000/shipping/address?origin_country=US&origin_state=WA&origin_city=Seattle&origin_zip=98106&destination_country=US&destination_state=CA&destination_city=BeverlyHills&destination_zip=90210
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
