@@ -3,19 +3,24 @@ class ShippingController < ApplicationController
   before_action :origin, :destination, :packages
 
     def show
-      if params[:id]=="ups"
-        rates = find_rates(ups_carrier)
-        rates = sort_rates(rates)
-        status = 200
-      elsif params[:id] == "usps"
-        rates = find_rates(usps_carrier)
-        rates = sort_rates(rates)
-        status = 200
-      else
+      if params[:id] == "ups" || params[:id] == "usps"
+        if params[:id] == "ups"
+          rates = find_rates(ups_carrier)
+          rates = sort_rates(rates)
+          status = 200
+        elsif params[:id] == "usps"
+          rates = find_rates(usps_carrier)
+          rates = sort_rates(rates)
+          status = 200
+        end
+        render json: {"status": "success", "data": rates, "message": nil}, status: status
+      end
+
+      if params[:id] != "ups" && params[:id] != "usps"
         rates = []
         status = 204
+        render json: { "status": "error", "data": nil, "message": "Error has occurred"}, status: status
       end
-      render json: rates, status: status
     end
 
   private
