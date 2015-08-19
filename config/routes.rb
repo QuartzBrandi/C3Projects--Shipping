@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
 
   get '/shipping' => 'shipping#index'
-  get '/shipping/:id' => 'shipping#response'
+  get '/shipping/:id' => 'shipping#answer'
+  get '/origin' => 'shipping#origin'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
