@@ -61,3 +61,8 @@ group :production do
   # For deploying to Heroku
   gem 'pg'
 end
+
+group :test do
+  gem "webmock"
+  gem "vcr"
+end

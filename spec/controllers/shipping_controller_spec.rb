@@ -16,7 +16,7 @@ RSpec.describe ShippingController, type: :controller do
       destination_address2: "",
     }
   }
-
+ # Invalid destination_zip: "98"
   let(:invalid_query) {
     { origin_country: "US",
       origin_zip: "98101",
@@ -36,9 +36,11 @@ RSpec.describe ShippingController, type: :controller do
   {"ups" => 7, "usps" => 6}.each do |shipper, count|
     describe "GET 'show' id: #{shipper}" do
       before :each do
-        query = valid_query
-        query[:id] = shipper
-        get :show, query
+        VCR.use_cassette("valid_shipping", record: :new_episodes) do
+          query = valid_query
+          query[:id] = shipper
+          get :show, query
+        end
       end
 
       it "is successful" do
@@ -50,16 +52,15 @@ RSpec.describe ShippingController, type: :controller do
       end
 
       context "the returned json object" do
-        before :each do
-          @response = JSON.parse response.body
-        end
 
         # ex. [["UPS Standard", 2345], ["UPS Global", 3456]]
         it "lists multiple shipment types" do
+          @response = JSON.parse response.body
           expect(@response["data"].count).to eq count
         end
 
         it "lists shipment type and estimated cost" do
+          @response = JSON.parse response.body
           @response["data"].each do |estimate|
             expect(estimate.count).to eq 3
           end
@@ -85,20 +86,22 @@ RSpec.describe ShippingController, type: :controller do
     end
   end
 
-  describe "zip code is invalid address" do
+  describe '98 is invalid zip code' do
     before :each do
-      query = invalid_query
-      query[:id] = "ups"
-      get :show, query
-    end
-
-    it "is has 400 code status" do
-      expect(response.response_code).to eq 400
+      VCR.use_cassette("invalid_shipping", record: :new_episodes) do
+        query = invalid_query
+        query[:id] = "ups"
+        get :show, query
+      end
     end
 
     it "throws an error message 'Ivalid address' for zip code 98" do
       @response = JSON.parse response.body
       expect(@response["message"]).to eq "Invalid address"
+    end
+
+    it "is has 400 code status" do
+      expect(response.response_code).to eq 400
     end
   end
 end
