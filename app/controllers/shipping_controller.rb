@@ -22,7 +22,7 @@ class ShippingController < ApplicationController
           status = 400
         end
       end
-      
+
       if params[:id] != "ups" && params[:id] != "usps"
         rates = nil
         status = 400
@@ -60,11 +60,7 @@ class ShippingController < ApplicationController
     end
 
     def sort_rates(carrier_rates)
-      if ups_carrier
-        sorted_rates = carrier_rates.rates.sort_by(&:price).collect {|rate| [rate.service_name, rate.price, delivery_date(rate)]}
-      elsif usps_carrier
-        sorted_rates = carrier.rates.sort_by(&:price).collect {|rate| [rate.service_name, rate.price]}
-      end
+      sorted_rates = carrier_rates.rates.sort_by(&:price).collect {|rate| [rate.service_name, rate.price, delivery_date(rate)]}
       return sorted_rates
     end
 end
