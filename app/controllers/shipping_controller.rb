@@ -3,6 +3,7 @@ class ShippingController < ApplicationController
   before_action :origin, :destination, :packages
 
     def show
+
       if params[:id] == "ups" || params[:id] == "usps"
         status = 200
         if params[:id] == "ups"
@@ -13,18 +14,22 @@ class ShippingController < ApplicationController
 
         if rates
           rates = sort_rates(rates)
-          render json: {"status": "success", "data": rates, "message": nil}, status: status
+          text_status = "success"
+          message = nil
         else
+          text_status = "error"
+          message = "Invalid address"
           status = 400
-          render json: {"status": "error", "data": nil, "message": "Invalid address"}, status: status
         end
       end
-
+      
       if params[:id] != "ups" && params[:id] != "usps"
-        rates = []
+        rates = nil
         status = 400
-        render json: {"status": "error", "data": nil, "message": "Invalid carrier"}, status: status
+        text_status = "error"
+        message = "Invalid carrier"
       end
+      render json: {"status": text_status, "data": rates, "message": message}, status: status
     end
 
   private
