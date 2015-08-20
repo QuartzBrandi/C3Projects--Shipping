@@ -1,0 +1,104 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://onlinetools.ups.com/ups.app/xml/Rate
+    body:
+      encoding: UTF-8
+      string: |
+        <?xml version="1.0"?>
+        <AccessRequest>
+          <AccessLicenseNumber>7CE85DED4C9D07AB</AccessLicenseNumber>
+          <UserId>shopifolk</UserId>
+          <Password>Shopify_rocks</Password>
+        </AccessRequest>
+        <?xml version="1.0"?>
+        <RatingServiceSelectionRequest>
+          <Request>
+            <RequestAction>Rate</RequestAction>
+            <RequestOption>Shop</RequestOption>
+          </Request>
+          <PickupType>
+            <Code>01</Code>
+          </PickupType>
+          <CustomerClassification>
+            <Code>01</Code>
+          </CustomerClassification>
+          <Shipment>
+            <Shipper>
+              <Address>
+                <AddressLine1>301 Union St</AddressLine1>
+                <AddressLine2>PO BOX 55555-5555</AddressLine2>
+                <City>Seattle</City>
+                <StateProvinceCode>WA</StateProvinceCode>
+                <PostalCode>98101</PostalCode>
+                <CountryCode>US</CountryCode>
+                <ResidentialAddressIndicator>true</ResidentialAddressIndicator>
+              </Address>
+            </Shipper>
+            <ShipTo>
+              <Address>
+                <AddressLine1>University of Washington</AddressLine1>
+                <City>Seattle</City>
+                <StateProvinceCode>WA</StateProvinceCode>
+                <PostalCode>98</PostalCode>
+                <CountryCode>US</CountryCode>
+                <ResidentialAddressIndicator>true</ResidentialAddressIndicator>
+              </Address>
+            </ShipTo>
+            <Package>
+              <PackagingType>
+                <Code>02</Code>
+              </PackagingType>
+              <Dimensions>
+                <UnitOfMeasurement>
+                  <Code>IN</Code>
+                </UnitOfMeasurement>
+                <Length>36.614</Length>
+                <Width>3.937</Width>
+                <Height>3.937</Height>
+              </Dimensions>
+              <PackageWeight>
+                <UnitOfMeasurement>
+                  <Code>LBS</Code>
+                </UnitOfMeasurement>
+                <Weight>0.22</Weight>
+              </PackageWeight>
+              <PackageServiceOptions/>
+            </Package>
+          </Shipment>
+        </RatingServiceSelectionRequest>
+    headers:
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 20 Aug 2015 16:40:16 GMT
+      Server:
+      - Apache
+      X-Frame-Options:
+      - SAMEORIGIN
+      Pragma:
+      - no-cache
+      Content-Length:
+      - '396'
+      Content-Type:
+      - application/xml
+    body:
+      encoding: UTF-8
+      string: |-
+        <?xml version="1.0"?>
+        <RatingServiceSelectionResponse><Response><ResponseStatusCode>0</ResponseStatusCode><ResponseStatusDescription>Failure</ResponseStatusDescription><Error><ErrorSeverity>Hard</ErrorSeverity><ErrorCode>111210</ErrorCode><ErrorDescription>The requested service is unavailable between the selected locations.</ErrorDescription></Error></Response></RatingServiceSelectionResponse>
+    http_version: 
+  recorded_at: Thu, 20 Aug 2015 16:40:16 GMT
+recorded_with: VCR 2.9.3
