@@ -23,7 +23,7 @@ class ShippingController < ApplicationController
       if params[:id] != "ups" && params[:id] != "usps"
         rates = []
         status = 400
-        render json: { "status": "error", "data": nil, "message": "Invalid carrier"}, status: status
+        render json: {"status": "error", "data": nil, "message": "Invalid carrier"}, status: status
       end
     end
 
