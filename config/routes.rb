@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   get '/shipping' => 'shipping#index'
   get '/shipping/:id' => 'shipping#show'
-
+  post '/log/:id' => 'logs#create'
 
   # http://localhost:3000/shipping/address?origin_country=US&origin_state=WA&origin_city=Seattle&origin_zip=98106&destination_country=US&destination_state=CA&destination_city=BeverlyHills&destination_zip=90210
 
