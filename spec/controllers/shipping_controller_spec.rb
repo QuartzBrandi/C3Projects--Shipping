@@ -96,7 +96,7 @@ RSpec.describe ShippingController, type: :controller do
       expect(response.response_code).to eq 400
     end
 
-    it "displays error message 'Ivalid address' for fedex" do
+    it "throws an error message 'Ivalid address' for zip code 98" do
       @response = JSON.parse response.body
       expect(@response["message"]).to eq "Invalid address"
     end
