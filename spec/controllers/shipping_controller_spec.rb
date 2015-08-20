@@ -46,11 +46,11 @@ RSpec.describe ShippingController, type: :controller do
 
         # ex. [["UPS Standard", 2345], ["UPS Global", 3456]]
         it "lists multiple shipment types" do
-          expect(@response.count).to eq count
+          expect(@response["data"].count).to eq count
         end
 
         it "lists shipment type and estimated cost" do
-          @response.each do |estimate|
+          @response["data"].each do |estimate|
             expect(estimate.count).to eq 3
           end
         end
