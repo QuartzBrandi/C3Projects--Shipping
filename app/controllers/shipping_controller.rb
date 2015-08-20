@@ -18,7 +18,7 @@ class ShippingController < ApplicationController
           message = nil
         else
           text_status = "error"
-          message = "Invalid address HI VICA"
+          message = "Invalid address"
           status = 400
         end
       end
