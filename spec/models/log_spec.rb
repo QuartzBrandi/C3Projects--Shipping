@@ -5,7 +5,7 @@ RSpec.describe Log, type: :model do
 # Validations--------------------------------------------------------
   describe "validations" do
     before :each do
-      @log= create :log
+      @log = create :log
     end
 
     it "is valid" do
