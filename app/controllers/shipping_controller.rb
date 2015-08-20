@@ -29,7 +29,8 @@ class ShippingController < ApplicationController
         text_status = "error"
         message = "Invalid carrier"
       end
-      render json: {"status": text_status, "data": rates, "message": message}, status: status
+      hash = { "status" => text_status, "data" => rates, "message" => message }
+      render json: hash, status: status
     end
 
   private
