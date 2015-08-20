@@ -10,14 +10,20 @@ class ShippingController < ApplicationController
         else
           rates = find_rates(usps_carrier)
         end
-        rates = sort_rates(rates)
-        render json: {"status": "success", "data": rates, "message": nil}, status: status
+
+        if rates
+          rates = sort_rates(rates)
+          render json: {"status": "success", "data": rates, "message": nil}, status: status
+        else
+          status = 400
+          render json: {"status": "error", "data": nil, "message": "Invalid address"}, status: status
+        end
       end
 
       if params[:id] != "ups" && params[:id] != "usps"
         rates = []
         status = 400
-        render json: { "status": "error", "data": nil, "message": "Error has occurred"}, status: status
+        render json: { "status": "error", "data": nil, "message": "Invalid carrier"}, status: status
       end
     end
 
@@ -41,7 +47,11 @@ class ShippingController < ApplicationController
     end
 
     def find_rates(carrier)
-      carrier.find_rates(origin, destination, packages)
+      begin
+        carrier.find_rates(origin, destination, packages)
+      rescue ActiveShipping::ResponseError
+        return nil
+      end
     end
 
     def sort_rates(carrier_rates)
