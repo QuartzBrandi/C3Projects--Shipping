@@ -17,8 +17,8 @@ RSpec.describe LogsController, type: :controller do
       post :create, params
     end
 
-    it "is successful" do
-      expect(response.response_code).to eq 200
+    it "is successful after creating log" do
+      expect(response.response_code).to eq 201
     end
 
     it "returns json" do
